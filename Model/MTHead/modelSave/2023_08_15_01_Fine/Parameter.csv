@@ -1,0 +1,11 @@
+,0
+Epochs,21
+BatchSize,64
+Device,0
+Model,MTHead
+savepath,Model/MTHead/modelSave/2023_08_15_01_Fine
+isLoad,True
+LearningRate,6e-06
+Alpha,0.75
+Beta,0.25
+Weight,"[1, 1, 1, 1]"
