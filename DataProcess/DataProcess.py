@@ -8,7 +8,7 @@ DataPath1 = "../../Data/FL/*"
 savePath = "../../Data/Slices_Norm_FL/"
 fs = 500
 duration = 30 * fs
-sleep_dict = {"W":0, "N1": 0, "N2": 1, "N3": 2, "R": 3}
+sleep_dict = {"W": 0, "N1": 0, "N2": 1, "N3": 2, "R": 3}
 
 subjects_FL = glob.glob(DataPath1)
 FL_DataPath = []
