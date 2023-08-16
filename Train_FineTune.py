@@ -15,17 +15,17 @@ class Para_Train:
 
     def __init__(self):
         # Basic Para
-        self.Epochs = 21
+        self.Epochs = 51
         self.BatchSize = 64
         self.device = 0
         self.checkpoint = 5
 
         self.Model = "MTHead"
-        self.fs = 256
+        self.fs = 500
 
         # Oasis
-        indx = "2023_08_15_01_Fine"
-        self.database = "../Data/Slices_Norm_FL/"
+        indx = "2023_08_16_02_Fine"
+        self.database = "../Data/Slices_FL/"
         self.savepath = "Model/%s/modelSave/%s" % (self.Model, indx)
         self.grade = 4
 
@@ -34,12 +34,12 @@ class Para_Train:
 
         # Model Load
         self.isLoad = True
-        load_indx = "2023_08_15_01"
+        load_indx = "2023_08_16_01_Rough"
         self.loadPath = "Model/%s/modelSave/%s" % (self.Model, load_indx)
 
         # Learning Para
-        self.LearningRate = 6e-6
-        self.alpha = 0.75
+        self.LearningRate = 3e-6
+        self.alpha = 0.8
         self.beta = 1 - self.alpha
         self.weight = [1, 1, 1, 1]
 
