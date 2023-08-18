@@ -9,12 +9,12 @@ fs = 500
 duration = 30 * fs
 sleep_dict = {"W": 0, "N1": 0, "N2": 1, "N3": 2, "R": 3}
 
-subjects_IS = glob.glob(DataPath2)
+subjects_IS = glob.glob(DataPath2)[:-3]
 IS_DataPath = []
 IS_Label = []
 index = []
 
-for name in subjects_IS[:-3]:
+for name in subjects_IS:
     indx = name.split("sub")[1][:2]
     index.append(indx)
     IS_DataPath.append(name + "/sub%s_night_eeg_data.npy" % indx)
@@ -42,16 +42,17 @@ for name in range(len(IS_DataPath)):
 
     for i in range(count):
         data_temp = data[:, onsets[i]:onsets[i] + duration]
-        saveName = savePath2 + "Train/%s-%04d-stage%d.npy" % (index[name], i + 1, description[i])
+        saveName = savePath2 + "Train/IS0%s-%04d-stage%d.npy" % (index[name], i + 1, description[i])
         np.save(saveName, data_temp)
 
     print("Done! Use Time: %.3f" % (time.time() - time0))
 
+subjects_IS = glob.glob(DataPath2)[-3:]
 IS_DataPath = []
 IS_Label = []
 index = []
 
-for name in subjects_IS[-3:]:
+for name in subjects_IS:
     indx = name.split("sub")[1][:2]
     index.append(indx)
     IS_DataPath.append(name + "/sub%s_night_eeg_data.npy" % indx)
@@ -79,7 +80,7 @@ for name in range(len(IS_DataPath)):
 
     for i in range(count):
         data_temp = data[:, onsets[i]:onsets[i] + duration]
-        saveName = savePath2 + "Test/%s-%04d-stage%d.npy" % (index[name], i + 1, description[i])
+        saveName = savePath2 + "Test/IS0%s-%04d-stage%d.npy" % (index[name], i + 1, description[i])
         np.save(saveName, data_temp)
 
     print("Done! Use Time: %.3f" % (time.time() - time0))
