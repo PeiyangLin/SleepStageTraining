@@ -68,9 +68,9 @@ def All_Processing(dataPath, labelPath, indx, warmingTime, Time_Sld, C3, REog, E
     # Predict offline yasa
     print("Predicting offline data by yasa...")
     now = time.time()
-    data_C3 = data[C3]
-    data_REOG = data[REog]
-    data_EMG = data[EMG]
+    data_C3 = data[C3] / 1e6
+    data_REOG = data[REog] / 1e6
+    data_EMG = data[EMG] / 1e6
     data_yasa = np.array([data_C3, data_REOG, data_EMG])
     info = mne.create_info(ch_names=['C3', 'REOG', "EMG"],
                            ch_types='eeg',
@@ -78,7 +78,6 @@ def All_Processing(dataPath, labelPath, indx, warmingTime, Time_Sld, C3, REog, E
     raw_yasa = mne.io.RawArray(data_yasa, info, verbose=False)
     sls = yasa.SleepStaging(raw_yasa, eeg_name='C3', eog_name='REOG', emg_name="EMG")
     pred_yasa = sls.predict()
-    print(pred_yasa)
     offline_yasa = []
     for p in pred_yasa:
         temp_stage = mapping_yasa[p]
@@ -94,6 +93,10 @@ def All_Processing(dataPath, labelPath, indx, warmingTime, Time_Sld, C3, REog, E
     now = time.time()
     # Data Splitting and Model Init
     data_slices = []
+
+    data_C3 = data[C3]
+    data_REOG = data[REog]
+    data_EMG = data[EMG]
     data_my = np.array([data_C3, data_REOG, data_EMG])
 
     for i in tqdm(range(count), desc="Data Splitting"):
@@ -141,8 +144,8 @@ REog = 6
 EMG = 7
 
 # indx = 20
-# DataPath = "I:/DataSets/CIBR_data/FL/*"
-DataPath = "I:/DataSets/CIBR_data/insight/*"
+DataPath = "I:/DataSets/CIBR_data/FL/*"
+# DataPath = "I:/DataSets/CIBR_data/insight/*"
 
 DataPath = glob.glob(DataPath)
 
