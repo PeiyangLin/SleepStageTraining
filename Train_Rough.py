@@ -24,8 +24,8 @@ class Para_Train:
         self.fs = 500
 
         # Oasis
-        indx = "2023_08_16_01_Rough"
-        self.database = "../Data/Slices_FL/"
+        indx = "2023_08_21_01_Rough_ALL"
+        self.database = sorted(["../Data/Slices_FL/", "../Data/Slices_IS/"])
         self.savepath = "Model/%s/modelSave/%s" % (self.Model, indx)
         self.grade = 4
 
@@ -226,11 +226,19 @@ checkpoint = P.checkpoint
 fs = P.fs
 now = time.time()
 
-dataPath_train = P.database + "Train/*"
-dataPath_train = np.array(sorted(glob.glob(dataPath_train)))
+dataPath_train = []
+for path in P.database:
+    path = path + "Train/*"
+    path = sorted(glob.glob(path))
+    dataPath_train += path
+dataPath_train = np.array(dataPath_train)
 
-dataPath_test = P.database + "Test/*"
-dataPath_test = np.array(sorted(glob.glob(dataPath_test)))
+dataPath_test = []
+for path in P.database:
+    path = path + "Test/*"
+    path = sorted(glob.glob(path))
+    dataPath_train += path
+dataPath_test = np.array(dataPath_train)
 
 # Checking and Making Dictionary
 savePath = P.savepath
