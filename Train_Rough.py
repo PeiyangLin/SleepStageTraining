@@ -32,10 +32,10 @@ class Para_Train:
         # Model Path
         self.modelpath = "Model.%s.Model" % self.Model
 
-        # # Model Load
-        # self.isLoad = False
-        # load_indx = "2023_03_08_01_4Stage"
-        # self.loadPath = "Model/%s/modelSave/%s" % (self.Model, load_indx)
+        # Model Load
+        self.isLoad = False
+        load_indx = "2023_03_08_01_4Stage"
+        self.loadPath = "Model/%s/modelSave/%s" % (self.Model, load_indx)
 
         # Learning Para
         self.LearningRate = 6e-4
