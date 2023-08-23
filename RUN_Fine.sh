@@ -3,7 +3,7 @@
 #SBATCH -p q_ai8
 #SBATCH -n 1
 #SBATCH -N 1
-#SBATCH -c 4
+#SBATCH -c 8
 #SBATCH --gres=gpu:1
 #SBATCH --mem=128G
 #SBATCH -o job.%j.out

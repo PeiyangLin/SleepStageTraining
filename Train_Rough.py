@@ -230,14 +230,16 @@ dataPath_train = []
 for path in P.database:
     path = path + "Train/*"
     path = sorted(glob.glob(path))
-    dataPath_train += path
+    for p in path:
+        dataPath_train.append(p)
 dataPath_train = np.array(dataPath_train)
 
 dataPath_test = []
 for path in P.database:
     path = path + "Test/*"
     path = sorted(glob.glob(path))
-    dataPath_train += path
+    for p in path:
+        dataPath_test.append(p)
 dataPath_test = np.array(dataPath_train)
 
 # Checking and Making Dictionary
