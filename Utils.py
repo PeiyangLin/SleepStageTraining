@@ -11,7 +11,7 @@ def shuffle(data):
 
 class Dataset_epoch(Data.Dataset):
 
-    def __init__(self, datapath_data, fs=500):
+    def __init__(self, datapath_data, fs=500, use_channel=3):
         self.data = datapath_data
         self.N1 = []
         self.N2 = []
@@ -22,6 +22,8 @@ class Dataset_epoch(Data.Dataset):
         self.count_2 = 0
         self.count_3 = 0
         self.count_R = 0
+
+        self.use_channel = use_channel
 
         for path in datapath_data:
             label = int(path.split("stage")[1][0])
@@ -50,43 +52,53 @@ class Dataset_epoch(Data.Dataset):
 
         pick = step % 4
         if pick == 0:
-            datapath = self.N1[self.count_1]
+            dataPath = self.N1[self.count_1]
             self.count_1 += 1
             label = 0
             if self.count_1 == len(self.N1):
                 self.count_1 = 0
 
         elif pick == 1:
-            datapath = self.N2[self.count_2]
+            dataPath = self.N2[self.count_2]
             self.count_2 += 1
             label = 1
             if self.count_2 == len(self.N2):
                 self.count_2 = 0
 
         elif pick == 2:
-            datapath = self.N3[self.count_3]
+            dataPath = self.N3[self.count_3]
             self.count_3 += 1
             label = 2
             if self.count_3 == len(self.N3):
                 self.count_3 = 0
 
         elif pick == 3:
-            datapath = self.REM[self.count_R]
+            dataPath = self.REM[self.count_R]
             self.count_R += 1
             label = 3
             if self.count_R == len(self.REM):
                 self.count_R = 0
 
-        data = torch.tensor(np.load(datapath), dtype=torch.float32)
+
+        data = np.load(dataPath)
+        if self.use_channel == 1:
+            data = np.array([data[0]])
+        elif self.use_channel == 2:
+            data = np.array([data[0], data[1]])
+        elif self.use_channel == 3:
+            pass
+        data = torch.tensor(data, dtype=torch.float32)
 
         return data, label
 
 
 class Dataset_epoch_FineTune(Data.Dataset):
 
-    def __init__(self, datapath_data, fs=500):
+    def __init__(self, datapath_data, fs=500, use_channel=3):
         self.data = datapath_data
         self.fs = fs
+
+        self.use_channel = use_channel
 
 
     def __len__(self):
@@ -94,8 +106,8 @@ class Dataset_epoch_FineTune(Data.Dataset):
 
 
     def __getitem__(self, step):
-        datapath = self.data[step]
-        label = int(datapath.split("stage")[1][0])
+        dataPath = self.data[step]
+        label = int(dataPath.split("stage")[1][0])
 
         if label == 0:
             label = 0
@@ -106,7 +118,14 @@ class Dataset_epoch_FineTune(Data.Dataset):
         else:
             label = 3
 
-        data = torch.tensor(np.load(datapath), dtype=torch.float32)
+        data = np.load(dataPath)
+        if self.use_channel == 1:
+            data = np.array([data[0]])
+        elif self.use_channel == 2:
+            data = np.array([data[0], data[1]])
+        elif self.use_channel == 3:
+            pass
+        data = torch.tensor(data, dtype=torch.float32)
 
         return data, label
 

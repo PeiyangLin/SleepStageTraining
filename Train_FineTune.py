@@ -20,11 +20,13 @@ class Para_Train:
         self.device = 0
         self.checkpoint = 5
 
-        self.Model = "MTHead"
+        self.Model = "MTHead_EEG"
+        self.use_channel = 1
+
         self.fs = 500
 
         # Oasis
-        indx = "2023_08_21_02_Fine_ALL"
+        indx = "2023_09_15_01_Fine_ALL_SingleChannel"
         self.database = sorted(["../Data/Slices_FL/", "../Data/Slices_IS/"])
         self.savepath = "Model/%s/modelSave/%s" % (self.Model, indx)
         self.grade = 4
@@ -34,7 +36,7 @@ class Para_Train:
 
         # Model Load
         self.isLoad = True
-        load_indx = "2023_08_21_01_Rough_ALL"
+        load_indx = "2023_09_15_01_Rough_ALL_SingleChannel"
         self.loadPath = "Model/%s/modelSave/%s" % (self.Model, load_indx)
 
         # Learning Para
@@ -262,10 +264,10 @@ print("Testing Set: ", dataPath_test.shape[0])
 print(datacount(dataPath_test))
 
 # DataSet
-train_sets_unload = Utils.Dataset_epoch_FineTune(dataPath_train)
+train_sets_unload = Utils.Dataset_epoch_FineTune(dataPath_train, use_channel=P.use_channel)
 train_sets = Data.DataLoader(dataset=train_sets_unload, batch_size=BatchSize, shuffle=True)
 
-test_sets_unload = Utils.Dataset_epoch_FineTune(dataPath_test)
+test_sets_unload = Utils.Dataset_epoch_FineTune(dataPath_test, use_channel=P.use_channel)
 test_sets = Data.DataLoader(dataset=test_sets_unload, batch_size=1, shuffle=False)
 
 # Model Set
