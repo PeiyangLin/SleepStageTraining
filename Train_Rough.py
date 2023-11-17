@@ -15,18 +15,25 @@ class Para_Train:
 
     def __init__(self):
         # Basic Para
-        self.Epochs = 51
+        self.Epochs = 101
         self.BatchSize = 256
         self.device = 0
         self.checkpoint = 5
 
-        self.Model = "MTHead_EEGEOG"
-        self.use_channel = 2
+        self.use_channel = 3
+        modelIndex = ["MTHead_EEG", "MTHead_EEGEOG", "MTHead"]
+        self.Model = "%s" % modelIndex[self.use_channel-1]
 
         self.fs = 500
 
         # Oasis
-        indx = "2023_09_15_01_Rough_ALL_TWOChannel"
+        date = "2023_09_16"
+        r = 1
+        channelIndex = ["OneChannel", "TwoChannels", "AllChannels"]
+        dataBase = "All"
+
+        indx = "%s_%02d_Rough_%s_%s" % (date, r, dataBase, channelIndex[self.use_channel - 1])
+
         self.database = sorted(["../Data/Slices_FL/", "../Data/Slices_IS/"])
         self.savepath = "Model/%s/modelSave/%s" % (self.Model, indx)
         self.grade = 4
@@ -40,7 +47,7 @@ class Para_Train:
         self.loadPath = "Model/%s/modelSave/%s" % (self.Model, load_indx)
 
         # Learning Para
-        self.LearningRate = 6e-4
+        self.LearningRate = 6e-5
         self.alpha = 0.8
         self.beta = 1 - self.alpha
         self.weight = [1, 1, 1, 1]

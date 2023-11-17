@@ -49,28 +49,31 @@ def stage_Cal(label):
     return result
 
 
-DataPath_All = "../../Data/insight/*night*"
-savePath = "../../Data/Slice_IS/"
+DataPath_All = "../../Data/FL/*"
+savePath = "../../Data/Slice_FL/"
 fs = 500
 duration = 30
 stride = 3
 sleep_dict = {"W": 0, "N1": 0, "N2": 1, "N3": 2, "R": 3}
 
+duration *= fs
+stride *= fs
+
 subjects = glob.glob(DataPath_All)[3:]
 DataPath = []
 Label = []
-FL_Channel = []
+Channel = []
 index = []
 
 for name in subjects:
-    indx = name.split("sub")[1][:2]
+    indx = name[-3:]
     index.append(indx)
-    DataPath.append(name + "/sub%s_night_eeg_data.npy" % indx)
+    DataPath.append(name + "/%s_eeg_data.npy" % indx)
     Label.append(name + "/hypno_30s.csv")
-    FL_Channel.append(name + "/sub%s_night_eeg_channel.npy" % indx)
+    Channel.append(name + "/%s_eeg_channel.npy" % indx)
 
 # Training Set
-for name in range(len(DataPath_All) - 3):
+for name in range(len(DataPath) - 3):
     time0 = time.time()
     data = np.load(DataPath[name])
     label_total = pd.read_csv(Label[name])
@@ -85,7 +88,7 @@ for name in range(len(DataPath_All) - 3):
             label.append(stage_temp)
     total_len = len(label)
 
-    EEG_Pick, EOG_Pick, EMG_Pick = channel_pick(FL_Channel[name])
+    EEG_Pick, EOG_Pick, EMG_Pick = channel_pick(Channel[name])
 
     data_C3 = data[EEG_Pick][:total_len]
     data_REOG = data[EOG_Pick][:total_len]
@@ -116,21 +119,21 @@ for name in range(len(DataPath_All) - 3):
 
     print("Done! Use Time: %.3f" % (time.time() - time0))
 
+# Testing Set
 subjects = glob.glob(DataPath_All)[:3]
 DataPath = []
 Label = []
-FL_Channel = []
+Channel = []
 index = []
 
 for name in subjects:
-    indx = name.split("sub")[1][:2]
+    indx = name[-3:]
     index.append(indx)
-    DataPath.append(name + "/sub%s_night_eeg_data.npy" % indx)
+    DataPath.append(name + "/%s_eeg_data.npy" % indx)
     Label.append(name + "/hypno_30s.csv")
-    FL_Channel.append(name + "/sub%s_night_eeg_channel.npy" % indx)
+    Channel.append(name + "/%s_eeg_channel.npy" % indx)
 
 
-# Testing Set
 for name in range(3):
     time0 = time.time()
     data = np.load(DataPath[name])
@@ -146,7 +149,7 @@ for name in range(3):
             label.append(stage_temp)
     total_len = len(label)
 
-    EEG_Pick, EOG_Pick, EMG_Pick = channel_pick(FL_Channel[name])
+    EEG_Pick, EOG_Pick, EMG_Pick = channel_pick(Channel[name])
 
     data_C3 = data[EEG_Pick][:total_len]
     data_REOG = data[EOG_Pick][:total_len]

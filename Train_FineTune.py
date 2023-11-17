@@ -15,18 +15,24 @@ class Para_Train:
 
     def __init__(self):
         # Basic Para
-        self.Epochs = 51
+        self.Epochs = 151
         self.BatchSize = 64
         self.device = 0
         self.checkpoint = 5
 
-        self.Model = "MTHead_EEG"
         self.use_channel = 1
+        modelIndex = ["MTHead_EEG", "MTHead_EEGEOG", "MTHead"]
+        self.Model = "%s" % modelIndex[self.use_channel - 1]
 
         self.fs = 500
 
         # Oasis
-        indx = "2023_09_15_01_Fine_ALL_SingleChannel"
+        date = "2023_09_18"
+        r = 1
+        channelIndex = ["OneChannel", "TwoChannels", "AllChannels"]
+        dataBase = "All"
+
+        indx = "%s_%02d_Fine_%s_%s" % (date, r, dataBase, channelIndex[self.use_channel - 1])
         self.database = sorted(["../Data/Slices_FL/", "../Data/Slices_IS/"])
         self.savepath = "Model/%s/modelSave/%s" % (self.Model, indx)
         self.grade = 4
@@ -36,11 +42,16 @@ class Para_Train:
 
         # Model Load
         self.isLoad = True
-        load_indx = "2023_09_15_01_Rough_ALL_SingleChannel"
+        date = "2023_09_16"
+        r = 1
+        dataBase = "All"
+        self.modelIndex = 90
+
+        load_indx = "%s_%02d_Rough_%s_%s" % (date, r, dataBase, channelIndex[self.use_channel - 1])
         self.loadPath = "Model/%s/modelSave/%s" % (self.Model, load_indx)
 
         # Learning Para
-        self.LearningRate = 3e-6
+        self.LearningRate = 3e-7
         self.alpha = 0.8
         self.beta = 1 - self.alpha
         self.weight = [1, 1, 1, 1]
@@ -277,7 +288,7 @@ model = Model_total().to(device)
 
 if isLoad:
     load_path = P.loadPath + "/model/*.pth"
-    load_path = sorted(glob.glob(load_path))[-1]
+    load_path = sorted(glob.glob(load_path))[P.modelIndex]
     print("Loading model", load_path)
     model.load_state_dict(torch.load(load_path))
     print("Done")

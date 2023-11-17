@@ -6,7 +6,7 @@ import numpy as np
 class Para_model:
 
     def __init__(self):
-        fs = 256
+        fs = 500
         self.conv_fs1 = {"inchan": 3,
                          "outchan": 16,
                          "kernel": int(fs / 1),
@@ -86,7 +86,7 @@ class Para_model:
 
         # Flatten
 
-        self.linear = {"inchan": 208,
+        self.linear = {"inchan": 96,
                        "outchan": 4}
 
 
@@ -218,7 +218,5 @@ class Model_total(nn.Module):
         output = self.ft(output)
 
         output = self.fc(output)
-
-        output = self.softmax(output)
 
         return output

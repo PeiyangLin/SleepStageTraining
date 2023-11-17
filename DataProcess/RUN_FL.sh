@@ -15,4 +15,4 @@ source ~/.bashrc
 conda activate DL
 
 conda info
-python DataProcess_IS.py
+python DataProcess_FL.py
